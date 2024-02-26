@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-FOLDER_PATH = os.environ.get('FOLDER_PATH', './outputs_and_logs')
+FOLDER_PATH = os.environ.get('FOLDER_PATH', '.')
 HEADLESS_MODE = os.environ.get('HEADLESS_MODE', '1') != '0'
 PAGE_DEFAULT_TIMEOUT_IN_SEC = int(os.environ.get('PAGE_DEFAULT_TIMEOUT_IN_SEC', '60'))
 
