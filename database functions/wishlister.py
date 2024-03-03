@@ -1,10 +1,17 @@
-import sqlite3 as sql
+import numpy
+from sqlalchemy import *
 import pandas as pd
 
 class Wishlist:
-    def __init__(self, db_location, json_location = None, json = None):
-        self.db_loc = db_location
-        self.dbConnection = sql.connect(self.db_loc)
+    def __init__(self, username, password, db_location, json_location = None, json = None, num_workers=10):
+        url_object = URL.create(
+            "postgresql+pg8000",
+            username=username,
+            password=password,  # plain (unescaped) text
+            host="localhost",
+            database=db_location,
+        )
+        self.dbEngine = create_engine(url_object, pool_size=num_workers)
         assert(json_location != None ^ json != None) # accept only one input.
         if json_location:
             self.urlProductsTable()
