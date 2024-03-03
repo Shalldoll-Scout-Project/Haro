@@ -17,7 +17,7 @@ class Wishlist:
             "postgresql+pg8000",
             username=username,
             password=password,  # plain (unescaped) text
-            host="localhost",
+            host=hostname,
             database=db_location,
         )
         self.dbEngine = create_engine(haro_URL, pool_size=num_workers)
@@ -42,10 +42,16 @@ class Wishlist:
         pass
 
     def createUserTable(self):
+        # this basically checks if users table exists and creates one if not
         pass
 
     def createWishlistTable(self):
+        # same as above but for wishlists and creates one if not
         pass
 
     def addCustomProduct(self, name, price, size, weight):
+        # useful for p bandai things i guess. if anyone wants to contribute. 
+        # maybe add something there that stores this info somewhere else also?
         pass
+
+    # more functions needed
