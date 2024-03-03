@@ -1,8 +1,10 @@
+import os
 import numpy
 from sqlalchemy import *
 import pandas as pd
+from dotenv import load_dotenv
 
-class Wishlist:
+class wishlistManager:
     def __init__(
         self,
         hostname,
@@ -20,8 +22,9 @@ class Wishlist:
             host=hostname,
             database=db_location,
         )
+        print(haro_URL)
         self.dbEngine = create_engine(haro_URL, pool_size=num_workers)
-        assert json_location != None ^ json != None  # accept only one input.
+        assert (json_location != None) ^ (json != None)  # accept only one input.
         if json_location:
             self.urlProductsTable()
         else:
@@ -33,8 +36,8 @@ class Wishlist:
         # get json from URL
         # convert it to a pandas DF or similar.
         with self.dbEngine.connect() as conn:
-            conn.execute() # create table if not exists
-            conn.execute() # insert every row into the table (might be loop but i doubt it)
+            conn.execute('CREATE TABLE IF NOT EXISTS Products') # create table if not exists
+            # conn.execute() # insert every row into the table (might be loop but i doubt it)
             conn.commit()
 
     def jsonProductsTable(self):
@@ -55,3 +58,12 @@ class Wishlist:
         pass
 
     # more functions needed
+if __name__ == '__main__':
+    # i will load environment variables from a .env file, make your own if you wish to test.
+    load_dotenv('/database functions/')
+    hostname = 'localhost:5432'
+    username = os.getenv('USRNAME')
+    password = os.getenv('PSSWRD')
+    db_location = '/haro_db'
+    json_location = 'https://raw.githubusercontent.com/Shalldoll-Scout-Project/Haro/main/web_scraping_scripts/hlj/outputs_and_logs/hlj_products_info.json'
+    wishlistManager(hostname, username, password, db_location, json_location=json_location)
