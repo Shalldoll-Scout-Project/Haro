@@ -34,9 +34,13 @@ class wishlistManager:
     def makeProductsTable(self):
         if self.json_url != None:
             self.prod_json = requests.get(self.json_url).json()
-        prod_df = pd.read_json(self.prod_json)
+            prod_df = pd.DataFrame.from_dict(self.prod_json)
+        else:
+            prod_df = pd.read_json(self.prod_json)
+        self.prod_columns = prod_df.columns
+        print(self.prod_columns)
         with self.dbEngine.connect() as conn:
-            prod_df.to_sql('Products', conn, if_exists='replace', ) # use pandas built-in db writer
+            prod_df.to_sql('Products', conn, if_exists='replace') # use pandas built-in db writer
             conn.commit()
 
     def createUserTable(self):
@@ -47,7 +51,11 @@ class wishlistManager:
         # same as above but for wishlists and creates one if not
         pass
 
-    def addCustomProduct(self, name, price, size, weight):
+    def addCustomProduct(self):
+        """This function call needs a little more work. Essentially, some DiscordAPI needs to be
+        either pre-written or ended to use columns from the dataframe (accessed using
+        `self.prod_columns`). Then, we can probably pass that as *args and I can read them using the
+        same list on my side."""
         # useful for p bandai things i guess. if anyone wants to contribute. 
         # maybe add something there that stores this info somewhere else also?
         pass
